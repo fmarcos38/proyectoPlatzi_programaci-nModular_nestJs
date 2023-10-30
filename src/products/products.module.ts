@@ -9,6 +9,7 @@ import { CategoriesService } from './services/categories.service';
 
 @Module({
     controllers: [ProductsController, CategoriesController, BrandsController],
-    providers: [ProductsService, CategoriesService, BrandsService]
+    providers: [ProductsService, CategoriesService, BrandsService],
+    exports: [ProductsService], //con esto hago q ese service sea exportable PARA otro modulo q lo requiera(como users)
 })
 export class ProductsModule {}

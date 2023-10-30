@@ -5,9 +5,9 @@ import { AppService } from './app.service';
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Get()
+  @Get() //http://localhost:3000/
   getHello(): string {
-    return 'Hola mundo!';
+    return this.appService.getHello(); //cambio al service q muestra el dato valor
   }
 
   @Get('nuevo')
