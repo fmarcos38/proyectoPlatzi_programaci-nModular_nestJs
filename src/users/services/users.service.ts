@@ -2,13 +2,20 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserDto, UpdateUserDto } from '../dtos/user.dto';
 import { User } from '../entities/user.entity';
 import { ProductsService } from 'src/products/services/products.service';
+import { ConfigService } from '@nestjs/config'; //para el arch .env
 
-
+/* 
+  NOTA: este ARCH es el q genera LAS RUTAS
+  Por ejm AllUsers-> http://localhost:3000/users/
+*/
 
 @Injectable()
 export class UsersService {
 
-  constructor(private productService: ProductsService) {}
+  constructor(
+    private productService: ProductsService,
+    private configService: ConfigService //asi me traigo el archivo .en
+  ) {}
 
   private counterId = 1;
   private users: User[] = [
@@ -21,6 +28,9 @@ export class UsersService {
   ];
 
   findAll() {
+    //me traigo del arch .env una de sus variables
+    const val = this.configService.get('VALOR');
+    console.log("valor: ", val);//ejmplo para ver la variable de entorno
     return this.users;
   }
 
