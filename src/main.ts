@@ -23,7 +23,9 @@ async function bootstrap() {
   // URL API --> es el endpoint donde va a estar la documentacion
   SwaggerModule.setup('docs', app, document);
 
-
+  //con esta directiva desHabilito los cors, para q al deployar se le pueda enviar peticiones desde cualq soft(ya sea un froned, o app android) fuera del dominio donde se haga el deployment
+  app.enableCors();
+  
   await app.listen(3000);
 }
 bootstrap();

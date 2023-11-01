@@ -37,3 +37,6 @@ lerna-debug.log*
 .env
 .env.desarr
 .env.prod
+
+#docker carpeta de mongo
+/mongo_data

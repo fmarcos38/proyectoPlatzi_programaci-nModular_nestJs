@@ -5,7 +5,7 @@ import { UsersModule } from './users/users.module';
 import { ProductsModule } from './products/products.module';
 import { ConfigModule } from '@nestjs/config'; //para variables de entorno
 import { enviroments } from './enviroments'; //para variables de entorno DINAMICO(segun ambiente)
-import * as Joi from 'joi';
+//import * as Joi from 'joi';
 
 //---------para versiones 8 o + ----------------------------------------------
 //import { HttpService, HttpModule } from @nestjs/axios; //tamb instalar axios
@@ -13,6 +13,7 @@ import * as Joi from 'joi';
 import { DatabaseModule } from './database/database.module';
 import config from 'config';
 //------fin v 8---------------------------------------------------------------
+
 
 @Module({
   imports: [
