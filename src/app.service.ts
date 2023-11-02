@@ -3,6 +3,7 @@ import { ConfigType } from '@nestjs/config';
 import config from 'config'; //arch creado por mí
 //voy a tipar el tipo de dato q inyect para la DB
 import { Db } from 'mongodb';
+
 @Injectable()
 export class AppService {
 
@@ -10,7 +11,7 @@ export class AppService {
   constructor(
     @Inject(config.KEY) private configService: ConfigType<typeof config>, //forma de invocar el arch config.ts PARA utilizar sus declaracions
     @Inject('TAREAS') private tareas: any[],
-    @Inject('MONGO') private database: Db //inyect la DB
+    @Inject('MONGO') private database: Db //inyect la DB mongo
   ) {}
 
   //metodo global
@@ -21,8 +22,10 @@ export class AppService {
     return `Mostrando el valor ${val} inyectado de forma global`;
   }
 
-  //metodo global para la DB
+  //metodo global para traerme las TASKS de la DB
+  //este servicio LO tengo q conectar a un CONTROLADOR
   getTasks() {
-    
+    const tasksCollection = this.database.collection('tasks');
+    return tasksCollection.find().toArray();
   }
 }

@@ -1,25 +1,24 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateBrandDto, UpdateBrandDto } from '../dtos/brand.dto';
+import { Model } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
 import { Brand } from '../entities/brand.entitiy';
 
 @Injectable()
 export class BrandsService {
-  private countId = 1;
-  private brands: Brand[] = [
-    {
-      id: 1,
-      name: 'Brand 1',
-      image: 'https://i.imgur.com/U4iGx1j.jpeg',
-    },
-  ];
-
+  
+  //creo el constructor -> para poder inyectar le schema correspondiente
+  constructor(
+    @InjectModel(Brand.name) private brandModel: Model<Brand>
+  ) {}
+  
   //metodos
   findAll() {
-    return this.brands;
+    return this.brandModel.find().exec();
   }
 
-  findOne(id: number) {
-    const brand = this.brands.find((b) => b.id === id);
+  findOne(id: string) {
+    const brand = this.brandModel.findById(id);
     if (!brand) {
       throw new NotFoundException('`Brand #${id} not found`');
     }
@@ -27,28 +26,19 @@ export class BrandsService {
   }
 
   create(data: CreateBrandDto) {
-    this.countId = this.countId + 1;
-    const newBrand = {
-      id: this.countId,
-      ...data,
-    }
+    const newBrand = new Brand(data)
+    return newBrand.save();
   }
 
-  update(id: number, data: UpdateBrandDto) {
-    const brand = this.findOne(id);
-    const indexBrand = this.brands.findIndex((b) => b.id === id);
-    this.brands[indexBrand] = {
-      ...brand,
-      ...data,
-    };
+  update(id: string, data: UpdateBrandDto) {
+    const brand = this.brandModel.findByIdAndUpdate(id, {$set: data }, { new: true }).exec();
+    if(!brand) {
+      throw new NotFoundException("No existe el brand");
+    }
+    return brand;
   }
 
-  delete(id: number) {
-    const indexBrand = this.brands.findIndex((b) => b.id === id);
-    if (indexBrand === -1) {
-      throw new NotFoundException(`Brand #${id} not found`);
-    }
-    this.brands.splice(indexBrand, 1);
-    return true;
-  }
+  delete(id: string) {
+      return this.brandModel.findByIdAndDelete(id);
+  } 
 }

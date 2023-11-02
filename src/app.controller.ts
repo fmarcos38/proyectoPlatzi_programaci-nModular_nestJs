@@ -19,4 +19,10 @@ export class AppController {
   hello() {
     return 'con /sas/';
   }
+
+  //controlador para el servicio Q trae la colleccion Tasks de la DB mongo
+  @Get('/tasks/')
+  getTasks() {
+      return this.appService.getTasks();
+  }
 }

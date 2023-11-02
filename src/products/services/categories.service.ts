@@ -1,29 +1,26 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateCategoryDto, UpdateCategoryDto } from '../dtos/categories.dtos';
 import { Category } from '../entities/category.entity';
-
+import { Model } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
 @Injectable()
 export class CategoriesService {
-  //como solo estamos trabajando en mnemoria, creo contador para ID, y array de categorias
-  private countId = 1;
-  private categories: Category[] = [
-    {
-      id: 1,
-      name: 'Frutas',
-    },
-  ];
-
+  
+  //constructor para inyectar schema
+  constructor(
+    @InjectModel(Category.name) private categoryModel: Model<Category>
+  ) {}
   //metódos
   //trae todas las categorias
   findAll() {
-    return this.categories;
+    return this.categoryModel.find().exec();
   }
 
   //trae una categoría
-  findOne(id: number) {
-    const cat = this.categories.find(c => c.id === id);
+  findOne(id: string) {
+    const cat = this.categoryModel.findById(id);
     if (!cat) {
-       throw new NotFoundException('No existe dicha categoria');
+      throw new NotFoundException('No existe dicha categoria');
     }
     return cat;
   }
@@ -31,37 +28,21 @@ export class CategoriesService {
   //create
   //acá utilizo el DTO
   create(data: CreateCategoryDto) {
-    //agrego 1 al id
-    this.countId = this.countId + 1;
-    //creo un obj para añadir al array
-    const newCat = {
-      id: this.countId,
-      ...data,
-    }
-    this.categories.push(newCat);
-    return newCat;
+    const newCat = new Category(data);
+    return newCat.save();
   }
 
   //update
-  update(id: number, data: UpdateCategoryDto) {
-    //busco el elemnt
-    const category = this.findOne(id);
-    //busco el indice del elemnt en el array
-    const inidexCat = this.categories.findIndex((c) => c.id === id);
-    //lo reemplazo
-    this.categories[inidexCat] = {
-      ...category,
-      ...data,
-    };
+  update(id: string, data: UpdateCategoryDto) {
+    const cat = this.categoryModel.findByIdAndUpdate(id, {$set: data }, { new: true }).exec();
+    if(!cat) {
+      throw new NotFoundException("No existe el brand");
+    }
+    return cat;
   }
 
   //delete
-  remove(id: number) {
-    const index = this.categories.findIndex((item) => item.id === id);
-    if (index === -1) {
-      throw new NotFoundException(`Category #${id} not found`);
-    }
-    this.categories.splice(index, 1);
-    return true;
-  }
+  remove(id: string) {
+    return this.categoryModel.findByIdAndDelete(id);
+  } 
 }

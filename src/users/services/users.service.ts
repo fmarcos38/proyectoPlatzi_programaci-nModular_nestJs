@@ -71,7 +71,7 @@ export class UsersService {
     return true;
   }
 
-  getOrderByUser(id: number) {
+  async getOrderByUser(id: number) {
     const user = this.findOne(id);
     if(!user) {
       throw new NotFoundException(`User #${id} not found`);
@@ -79,7 +79,7 @@ export class UsersService {
     return {
       date: new Date(),
       user,
-      products: this.productService.findAll(),
-    }
+      products: await this.productService.findAll(),
+    };
   }
 }

@@ -12,6 +12,7 @@ import { CreateBrandDto, UpdateBrandDto } from '../dtos/brand.dto';
 import { Brand } from '../entities/brand.entitiy';
 import { BrandsService } from '../services/brands.service';
 import { ApiTags } from '@nestjs/swagger';
+import { MongoIdPipe } from 'src/common/mongo-id.pipe';
 
 @ApiTags('Brands')
 @Controller('brands')
@@ -26,7 +27,7 @@ export class BrandsController {
   }
 
   @Get(':id')
-  findOne(id: number) {
+  findOne(@Param ('id', MongoIdPipe) id: string) {
     return this.brandService.findOne(id);
   }
 
@@ -36,15 +37,12 @@ export class BrandsController {
   }
 
   @Put(':id')
-  update(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() payload: UpdateBrandDto,
-  ) {
+  update(@Param('id', MongoIdPipe) id: string, @Body() payload: UpdateBrandDto) {
     return this.brandService.update(id, payload);
   }
 
   @Delete(':id')
-  remove(@Param('id', ParseIntPipe) id: number) {
-    return this.brandService.delete(+id);
+  delete(@Param('id', MongoIdPipe) id: string) {
+    return this.brandService.delete(id);
   }
 }
