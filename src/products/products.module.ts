@@ -7,6 +7,8 @@ import { ProductsService } from './services/products.service';
 import { CategoriesService } from './services/categories.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Product, ProductSchema } from './entities/product.entity';
+import { Category, CategorySchema } from './entities/category.entity';
+import { Brand, BrandSchema } from './entities/brand.entitiy';
 
 @Module({
     imports: [
@@ -14,7 +16,16 @@ import { Product, ProductSchema } from './entities/product.entity';
             {
                 name: Product.name,
                 schema: ProductSchema
+            },
+            {
+                name: Category.name,
+                schema: CategorySchema
+            },
+            {
+                name: Brand.name,
+                schema: BrandSchema
             }
+
         ])
     ], //aquí declaro los SCHEMAS q va a utilizar este modulo(osea el modulo Products -> maneja el schema/entity Product)
     controllers: [ProductsController, CategoriesController, BrandsController],

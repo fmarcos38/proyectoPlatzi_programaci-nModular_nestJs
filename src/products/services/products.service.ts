@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Product } from '../entities/product.entity';
 import { CreateProductDto, FilterProductsDto, UpdateProductDto } from '../dtos/products.dtos';
-import { Model } from 'mongoose';
+import { FilterQuery, Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 
 @Injectable()
@@ -13,10 +13,19 @@ export class ProductsService {
   ) {}
 
   //trae todos los productos CON paginado
-  findAll(params?: FilterProductsDto) {
+  async findAll(params?: FilterProductsDto) {
     if(params) {
+      const filters: FilterQuery<Product> = {}; //creo un obj vacio TIPADO con FilterQuery de Productos para los filtros, y se lo paso por paran a la funcion FIND de mongo
       const { limit, offset} = params;
-      return this.productModel.find().skip(offset).limit(limit).exec();
+      const { minPrice, maxPrice } = params;
+
+      //al declarar un onj vacio, mongo me pemite pasarlo por param a la funcion find
+      //entonces mediante if puedo desarrollar todos los filtros necesarios VER documentacion de mongo/o curso de mongo
+      if(minPrice && maxPrice) {
+        filters.price = { $gte: minPrice, $lte: maxPrice } //gte -> >= ||| lte <= (codigo mongo)
+      }
+
+      return await this.productModel.find(filters).skip(offset).limit(limit).exec();
     }
     return this.productModel.find().exec();
   }
@@ -29,7 +38,7 @@ export class ProductsService {
     return product;
   }
 
-  create(data: CreateProductDto) {
+  /* create(data: CreateProductDto) {
     const newProd = new this.productModel(data);
 
     return newProd.save();
@@ -45,5 +54,5 @@ export class ProductsService {
 
   remove(id: string) {
     return this.productModel.findByIdAndDelete(id);
-  }
+  } */
 }

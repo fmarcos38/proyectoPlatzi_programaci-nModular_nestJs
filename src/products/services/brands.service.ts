@@ -17,8 +17,8 @@ export class BrandsService {
     return this.brandModel.find().exec();
   }
 
-  findOne(id: string) {
-    const brand = this.brandModel.findById(id);
+  async findOne(id: string) {
+    const brand = await this.brandModel.findById(id);
     if (!brand) {
       throw new NotFoundException('`Brand #${id} not found`');
     }

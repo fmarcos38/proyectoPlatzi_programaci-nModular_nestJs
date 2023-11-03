@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { CategoriesService } from '../services/categories.service';
 import { CreateCategoryDto, UpdateCategoryDto } from '../dtos/categories.dtos';
@@ -11,12 +11,18 @@ export class CategoriesController {
   constructor(private categoryService: CategoriesService) {}
 
   //metodos
-  @Get()
+  /* @Get()
   getCategories() {
     return this.categoryService.findAll();
   }
 
-  @Post()
+  @Get(':id')
+  @HttpCode(HttpStatus.ACCEPTED)
+  getOne(@Param('id', MongoIdPipe) id: string ) {
+    return this.categoryService.findOne(id);
+  } */
+
+ /*  @Post()
   create(@Body() payload: CreateCategoryDto) {
     return this.categoryService.create(payload);
   }
@@ -29,5 +35,5 @@ export class CategoriesController {
   @Delete(':id')
   delete(@Param('id', MongoIdPipe) id: string) {
     return this.categoryService.remove(id);
-  }
+  } */
 }
