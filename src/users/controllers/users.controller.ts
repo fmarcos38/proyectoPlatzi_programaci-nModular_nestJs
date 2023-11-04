@@ -1,45 +1,57 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put } from '@nestjs/common';
-import { UsersService } from '../services/users.service';
-import { CreateUserDto, UpdateUserDto } from '../dtos/user.dto';
-import { ApiTags } from '@nestjs/swagger';
-
-@ApiTags('Users')
-@Controller('users')
-export class UsersController {
-
-    constructor(private userService: UsersService) {}
-
+import {
+    Controller,
+    Get,
+    Param,
+    Post,
+    Body,
+    Put,
+    Delete,
+  } from '@nestjs/common';
+  import { ApiOperation, ApiTags } from '@nestjs/swagger';
+  
+  import { UsersService } from '../services/users.service';
+  import { CreateUserDto, UpdateUserDto } from '../dtos/user.dto';
+  
+  @ApiTags('users')
+  @Controller('users')
+  export class UsersController {
+    constructor(private usersService: UsersService) {}
+  
     @Get()
+    @ApiOperation({
+      summary: 'List of users',
+    })
     findAll() {
-        return this.userService.findAll();
+      return this.usersService.findAll();
     }
-
+  
+    @Get('tasks')
+    tasks() {
+      return this.usersService.getTasks();
+    }
+  
     @Get(':id')
-    findOne(@Param('id', ParseIntPipe) id: number) {
-        return this.userService.findOne(id);
+    get(@Param('id') id: string) {
+      return this.usersService.findOne(id);
     }
-
-    //trae las ordenes d compra d un user
+  
     @Get(':id/orders')
-    getOrders(@Param('id', ParseIntPipe) id: number) {
-        return this.userService.getOrderByUser(id);
+    getOrders(@Param('id') id: string) {
+      return this.usersService.getOrdersByUser(id);
     }
-
+  
     @Post()
     create(@Body() payload: CreateUserDto) {
-        return this.userService.create(payload);
+      return this.usersService.create(payload);
     }
-
+  
     @Put(':id')
-    update(
-        @Param('id', ParseIntPipe) id: number,
-        @Body() payload: UpdateUserDto
-    ) {
-        return this.userService.update(id, payload);
+    update(@Param('id') id: string, @Body() payload: UpdateUserDto) {
+      return this.usersService.update(id, payload);
     }
-
+  
     @Delete(':id')
-    remove(@Param('id', ParseIntPipe) id: number) {
-        return this.userService.remove(+id);
+    remove(@Param('id') id: string) {
+      return this.usersService.remove(id);
     }
-}
+  }

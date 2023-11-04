@@ -25,9 +25,9 @@ export class ProductsService {
         filters.price = { $gte: minPrice, $lte: maxPrice } //gte -> >= ||| lte <= (codigo mongo)
       }
 
-      return await this.productModel.find(filters).skip(offset).limit(limit).exec();
+      return await this.productModel.find(filters).populate('brand').skip(offset).limit(limit).exec();
     }
-    return this.productModel.find().exec();
+    return this.productModel.find().populate('brand').exec();
   }
 
   async findOne(id: string) {

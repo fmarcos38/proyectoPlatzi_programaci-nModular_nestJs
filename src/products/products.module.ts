@@ -12,7 +12,7 @@ import { Brand, BrandSchema } from './entities/brand.entitiy';
 
 @Module({
     imports: [
-        MongooseModule.forFeature([
+        MongooseModule.forFeature([ //aquí debo declarar c/entity/schema
             {
                 name: Product.name,
                 schema: ProductSchema

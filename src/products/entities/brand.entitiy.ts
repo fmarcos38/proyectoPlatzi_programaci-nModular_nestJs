@@ -4,7 +4,7 @@ import { Document } from "mongoose";
 @Schema()
 export class Brand extends Document {
 
-  @Prop()
+  @Prop({required: true, unique: true})
   name: string;
 
   @Prop()
