@@ -1,5 +1,5 @@
 import { IsMongoId, IsNotEmpty, IsDate, IsArray } from 'class-validator';
-import { PartialType } from '@nestjs/swagger';
+import { OmitType, PartialType } from '@nestjs/swagger';
 
 export class CreateOrderDto {
   @IsNotEmpty()
@@ -12,7 +12,15 @@ export class CreateOrderDto {
 
   @IsArray()
   @IsNotEmpty()
-  readonly products: string[];
+  readonly products: string[]; //array de string PARA las relaciones q neseciten u  array
 }
 
-export class UpdateOrderDto extends PartialType(CreateOrderDto) {}
+//para la actualizacion QUIERO q me omita osea q non reciba al atributo products
+export class UpdateOrderDto extends PartialType(OmitType(CreateOrderDto, ['products'])) {}
+
+//crea una nueva class PARA agregar productos a la orden de compra
+export class AddProductsToOrderDto {
+  @IsArray()
+  @IsNotEmpty()
+  readonly productsIds: string[];
+}

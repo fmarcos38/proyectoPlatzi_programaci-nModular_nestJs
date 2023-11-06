@@ -18,8 +18,9 @@ export class AppService {
   getHello(): string {
     //imprimo el array por la terminal
     //console.log("tareas: ", this.tareas); //muetra las tareas q vienen de la API
-    const val = this.configService.valor;//de esta forma NO me puedo equivocar al llamar la variable de entorno
-    return `Mostrando el valor ${val} inyectado de forma global`;
+    //const val = this.configService.valor;//de esta forma NO me puedo equivocar al llamar la variable de entorno
+    //return `Mostrando el valor ${val} inyectado de forma global`;
+    return `Mostrando el valor inyectado de forma global`;
   }
 
   //metodo global para traerme las TASKS de la DB

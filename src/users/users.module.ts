@@ -33,5 +33,6 @@ import { ProductsModule } from './../products/products.module';
   ],
   controllers: [CustomersController, UsersController, OrdersController],
   providers: [CustomersService, UsersService, OrdersService],
+  exports: [UsersService], //aqui hago accesible al modulo userService, para q otros modulos puedan utilizar sus metodos
 })
 export class UsersModule {}

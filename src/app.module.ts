@@ -11,7 +11,9 @@ import { enviroments } from './enviroments'; //para variables de entorno DINAMIC
 //import { HttpService, HttpModule } from @nestjs/axios; //tamb instalar axios
 //import { lastValueFrom } from 'rxjs';
 import { DatabaseModule } from './database/database.module';
+import { AuthModule } from './auth/auth.module';
 import config from 'config';
+import Joi from 'joi';
 //------fin v 8---------------------------------------------------------------
 
 
@@ -25,11 +27,12 @@ import config from 'config';
       envFilePath: enviroments[process.env.NODE_ENV] || '.env', //le especifico q arch tiene q leer
       load: [config], //le especifico q archivo debe utilizar ES eL Q cree YO
       isGlobal: true,
-      /* validationSchema: Joi.object({
+        validationSchema: Joi.object({
+        API_KEY: Joi.string().required,
         DATABASE_NAME: Joi.string().required,
         VALOR: Joi.number().required,
-      }) */ //validaciones para las variables de ambiente
-    }) 
+      }) //validaciones para las variables de ambiente
+    }), AuthModule 
   ],
   controllers: [AppController],
   providers: [
