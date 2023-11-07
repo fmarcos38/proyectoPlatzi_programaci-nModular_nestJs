@@ -31,6 +31,7 @@ import Joi from 'joi';
         API_KEY: Joi.string().required,
         DATABASE_NAME: Joi.string().required,
         VALOR: Joi.number().required,
+        JWT_SECRET: Joi.string().required,
       }) //validaciones para las variables de ambiente
     }), AuthModule 
   ],

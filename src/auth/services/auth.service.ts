@@ -1,13 +1,17 @@
 import { Injectable } from '@nestjs/common';
-import { UsersService } from 'src/users/services/users.service';
+import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
+import { User } from 'src/users/entities/user.entity';
 
+import { UsersService } from 'src/users/services/users.service';
+import { PayloadToken } from '../models/token.model';
 
 @Injectable()
 export class AuthService {
 
-    //para poder inyectarlo desd el constructor 1ro lo importo en el arch --> auth.module.ts
-    constructor(private userService: UsersService) {}
+    //para poder inyectarlo desd el constructor 1ro lo importo en el arch --> auth.module.ts (esto para UserService)
+    //el 2do param directamnt lo import desde aqui.
+    constructor(private userService: UsersService, private jwtService: JwtService) {}
 
     //creo metodo q recibe el email y la pass
     async validateUser(email: string, password: string) {
@@ -26,5 +30,19 @@ export class AuthService {
 
         //sino hay match
         return null;
+    }
+
+    //metodo para generar el JWT
+    async generateJWT(user: User) {
+        //en esta variable almaceno la info del user q quiero q viaje en el JWT
+        const payload: PayloadToken = {
+            role: user.role,
+            sub: user.id, //se lo llama sub(por buenas prácticas)
+        };
+
+        return {
+            access_token: this.jwtService.sign(payload), //encripto la info
+            user,
+        };
     }
 }

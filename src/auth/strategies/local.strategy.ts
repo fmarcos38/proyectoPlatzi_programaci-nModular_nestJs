@@ -1,4 +1,6 @@
 //este archivo es como un servico
+//esta clase lo q hace es decirnos si un user tiene o no el pass correcto --> ver q servicio consume
+
 import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { PassportStrategy } from "@nestjs/passport";
 import { Strategy } from "passport-local";

@@ -38,7 +38,7 @@ export class ProductsService {
     return product;
   }
 
-  /* create(data: CreateProductDto) {
+  create(data: CreateProductDto) {
     const newProd = new this.productModel(data);
 
     return newProd.save();
@@ -54,5 +54,5 @@ export class ProductsService {
 
   remove(id: string) {
     return this.productModel.findByIdAndDelete(id);
-  } */
+  }
 }
